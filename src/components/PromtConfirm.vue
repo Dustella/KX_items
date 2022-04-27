@@ -13,9 +13,9 @@ const route = useRoute();
 const id = Number(route.query.id);
 onMounted(async () => {
   const info = await GetItemById(id);
-  const name = info.name;
+  const name = info.Name;
   dialog.warning({
-    title: `你正在归还${name}，确定？`,
+    title: `你正在归还 ${name}，确定？`,
     content: "确定归还？",
     positiveText: "现在归还",
     negativeText: "取消",
