@@ -1,6 +1,6 @@
 <template>
   <n-card title="科协物品管理系统">
-    <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules">
+    <n-form ref="formRef" :model="formValue" :rules="rules">
       <n-form-item label="借用人姓名" path="name">
         <n-input v-model:value="formValue.name" placeholder="输入姓名" />
       </n-form-item>
@@ -19,6 +19,12 @@
           type="datetime"
           clearable
         />
+      </n-form-item>
+      <n-form-item label="借用物品名">
+        <h4>{{ res.Name }}</h4>
+      </n-form-item>
+      <n-form-item label="备注（选填）" path="comment">
+        <n-input v-model:value="formValue.comment" placeholder="电话号码" />
       </n-form-item>
       <n-form-item>
         <n-button attr-type="button" @click="handleValidateClick">
@@ -40,7 +46,7 @@ import {
   FormInst,
   NDatePicker,
 } from "naive-ui";
-import { onMounted, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 import { GetItemById } from "../apis/GetItem";
 
@@ -53,7 +59,9 @@ const formValue = ref({
   organization: "",
   phone: "",
   timestamp: 0,
+  comment: "",
 });
+const emit = defineEmits(["post"]);
 
 formValue.value.timestamp = new Date().getTime();
 const rules = {
@@ -72,22 +80,26 @@ const rules = {
     message: "请输入电话号码",
     trigger: ["input"],
   },
+
 };
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
+      emit("post", formValue.value,id);
       message.success("填写成功");
     } else {
       console.log(errors);
-      message.error("Invalid");
+      message.error("填写信息不完整");
     }
   });
 };
 
+let res = ref({ Name: "fetching" });
+
 onMounted(async () => {
-  const res = await GetItemById(id);
+  res.value = await GetItemById(id);
   console.log(res);
 });
 </script>
@@ -95,5 +107,7 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .n-card {
   margin: 20px;
+  position: relative;
+  padding: 10px;
 }
 </style>
