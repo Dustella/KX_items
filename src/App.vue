@@ -4,7 +4,6 @@
 
 <template>
 
-      la
 <router-view />
 </template>
 

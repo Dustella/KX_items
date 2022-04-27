@@ -16,17 +16,17 @@ function ISODateString(d: Date) {
     return n < 10 ? "0" + n : n;
   }
   return (
-    d.getUTCFullYear() +
+    d.getFullYear() +
     "-" +
-    pad(d.getUTCMonth() + 1) +
+    pad(d.getMonth() + 1) +
     "-" +
-    pad(d.getUTCDate()) +
+    pad(d.getDate()) +
     "T" +
-    pad(d.getUTCHours()) +
+    pad(d.getHours()) +
     ":" +
-    pad(d.getUTCMinutes()) +
+    pad(d.getMinutes()) +
     ":" +
-    pad(d.getUTCSeconds()) +
+    pad(d.getSeconds()) +
     "Z"
   );
 }
@@ -46,6 +46,6 @@ const handle = async(f: any, id: number) => {
     itemId: id,
   };
   await addRecord(form)
-  await router.push(`/OK?id=${id}`)
+  await router.push(`/OK?id=${id}&a=0`)
 };
 </script>

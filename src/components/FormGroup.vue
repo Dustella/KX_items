@@ -80,14 +80,13 @@ const rules = {
     message: "请输入电话号码",
     trigger: ["input"],
   },
-
 };
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      emit("post", formValue.value,id);
+      emit("post", formValue.value, id);
       message.success("填写成功");
     } else {
       console.log(errors);
@@ -96,10 +95,13 @@ const handleValidateClick = (e: MouseEvent) => {
   });
 };
 
-let res = ref({ Name: "fetching" });
+let res = ref({ Name: "fetching", Available: true });
 
 onMounted(async () => {
   res.value = await GetItemById(id);
+  if (!res.value.Available) {
+    location.href = `/ret?id=${id}`
+  }
   console.log(res);
 });
 </script>
